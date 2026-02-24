@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gcc -Wno-format -o main-bin main.c auto_click.c global_listen.c -Wno-deprecated-declarations -Wno-format-security -lm `pkg-config --cflags --libs gtk+-3.0 x11` -export-dynamic
