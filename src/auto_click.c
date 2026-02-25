@@ -75,6 +75,12 @@ gpointer start_auto_clicker(gpointer arg)
         
         g_usleep(1000000 / cps);
     }
+    
+    if(hotkeyIsActive && !listening)
+    {
+        hotkeyIsActive = !hotkeyIsActive;
+    }
+    
     ioctl(fd, UI_DEV_DESTROY);
     close(fd);
     return NULL;

@@ -62,18 +62,18 @@ int main(int argc, char *argv[])
 void on_toggleListen_toggled(GtkToggleButton *b)
 {  
     listening = gtk_toggle_button_get_active(b);
-    
-    if(listening && hotkeyIsActive) { hotkeyIsActive = !hotkeyIsActive; }
+    if(listening && !hotkeyIsActive){gtk_button_set_label(GTK_BUTTON(b), "Listening...");}
+    else gtk_button_set_label(GTK_BUTTON(b), "Start");
     
     gint spinVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS)); 
     
     if (listening)
     {
-        gtk_label_set_text (GTK_LABEL(listenLabel), (const gchar*) "Listening");
+        //gtk_label_set_text (GTK_LABEL(listenLabel), (const gchar*) "Listening");
         g_print("Program is listening for hotkey...\n");
     }
     else 
-    { 
+    {
         gtk_label_set_text (GTK_LABEL(listenLabel), (const gchar*) "fin"); 
         g_print("Program is not longer listening for hotkey... \n");
     }
