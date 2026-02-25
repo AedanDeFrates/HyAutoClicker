@@ -3,7 +3,7 @@
 
 
 //=============================================================
-//  global pointer delcarations for gtk widgets and the builder
+//  Global pointer delcarations for gtk widgets and the builder
 //=============================================================
 GtkWidget   *window1;
 GtkWidget   *container1;
@@ -31,7 +31,8 @@ void on_window1_focus_changed(GObject *o, GParamSpec *gpspec, gpointer user_data
 
 int main(int argc, char *argv[])
 {  
-    XInitThreads();    
+    XInitThreads();   
+     
     //Initializes GTK
     gtk_init(&argc, &argv);
 
@@ -62,44 +63,26 @@ int main(int argc, char *argv[])
 void on_toggleListen_toggled(GtkToggleButton *b)
 {  
     listening = gtk_toggle_button_get_active(b);
+    
     if(listening && !hotkeyIsActive){gtk_button_set_label(GTK_BUTTON(b), "Listening...");}
     else gtk_button_set_label(GTK_BUTTON(b), "Start");
     
     gint spinVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS)); 
-    
-    if (listening)
-    {
-        //gtk_label_set_text (GTK_LABEL(listenLabel), (const gchar*) "Listening");
-        g_print("Program is listening for hotkey...\n");
-    }
-    else 
-    {
-        gtk_label_set_text (GTK_LABEL(listenLabel), (const gchar*) "fin"); 
-        g_print("Program is not longer listening for hotkey... \n");
-    }
 }
 
 gboolean on_hotkey_press(GtkWidget *w, GdkEventKey *e)
 {
     //Exits the function if listening is FALSE or if the event -> keyval is not the correct hotkey
-    if (e -> keyval != GDK_KEY_F8 || !(listening))
-    {
-        return FALSE;
-    }
-    
-    g_print("The hotkey has been pressed and registered...\n");
+    if (e -> keyval != GDK_KEY_F8 || !(listening)) { return FALSE; }
     
     //Negates (!) the value of hotkeyIsActive
     hotkeyIsActive = !hotkeyIsActive;
     
     if (hotkeyIsActive)
     {
-        g_print("Hotkey is active, starting subprocess script... \n");
-        
         g_thread_new("autoclicker", (GThreadFunc)start_auto_clicker, GINT_TO_POINTER(gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS))));
         return TRUE;
     }
-    else { g_print("Hotkey is inactive, and the auto clicker has stopped...\n"); }
     return FALSE;
 }
 
@@ -112,8 +95,7 @@ void on_spinCPS_value_changed()
 void on_window1_focus_changed(GObject *o, GParamSpec *gpspec, gpointer user_data)
 {
     window1IsActive = gtk_window_is_active(GTK_WINDOW(window1));
-    g_print("Window focus has updated.\n Window 1 activity status = %d\n" , window1IsActive);
-    
+
     //get activity status of current window
     if (!window1IsActive)
     {
@@ -121,17 +103,3 @@ void on_window1_focus_changed(GObject *o, GParamSpec *gpspec, gpointer user_data
     }
     else {return;}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

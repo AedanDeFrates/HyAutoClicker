@@ -70,9 +70,7 @@ gpointer start_auto_clicker(gpointer arg)
         ev.code = SYN_REPORT;
         ev.value = 0;
         write(fd, &ev, sizeof(ev));
-
-        g_print("click\n");
-        
+ 
         g_usleep(1000000 / cps);
     }
     
