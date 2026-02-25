@@ -1,5 +1,4 @@
 #include "shared.h"
-#include "auto_click.h"
 #include "global_listen.h"
 
 
@@ -21,17 +20,18 @@ GtkBuilder  *builder;
 volatile bool hotkeyIsActive = false;
 volatile gboolean listening = FALSE;
 volatile gboolean window1IsActive = FALSE;
+volatile gint cpsVal = 0;
 
 //==============================
 // Global function delclarations
 //==============================
 
-gboolean on_hotkey_press(GtkWidget *w, GdkEventKey *e);
 void on_window1_focus_changed(GObject *o, GParamSpec *gpspec, gpointer user_data);
 
 
 int main(int argc, char *argv[])
 {  
+    XInitThreads();    
     //Initializes GTK
     gtk_init(&argc, &argv);
 
@@ -42,8 +42,7 @@ int main(int argc, char *argv[])
     window1 = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
     
     g_signal_connect(window1, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(window1, "notify::is-active", G_CALLBACK(on_window1_focus_changed), NULL);
-
+    
     gtk_builder_connect_signals(builder, NULL);
 
     //Gives the global pointers the values from the used GTK widgets
@@ -52,6 +51,7 @@ int main(int argc, char *argv[])
     toggleListen = GTK_WIDGET(gtk_builder_get_object(builder, "toggleListen"));
     listenLabel  = GTK_WIDGET(gtk_builder_get_object(builder, "listenLabel"));
     
+    cpsVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS));
     
 
     gtk_widget_show(window1);
@@ -82,7 +82,7 @@ void on_toggleListen_toggled(GtkToggleButton *b)
 gboolean on_hotkey_press(GtkWidget *w, GdkEventKey *e)
 {
     //Exits the function if listening is FALSE or if the event -> keyval is not the correct hotkey
-    if (e -> keyval != GDK_KEY_a || !(listening))
+    if (e -> keyval != GDK_KEY_F8 || !(listening))
     {
         return FALSE;
     }
@@ -106,12 +106,12 @@ gboolean on_hotkey_press(GtkWidget *w, GdkEventKey *e)
 void on_spinCPS_value_changed()
 {
     g_print("CPS set to: %d", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS)));
+    cpsVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS));
 }
 
 void on_window1_focus_changed(GObject *o, GParamSpec *gpspec, gpointer user_data)
 {
     window1IsActive = gtk_window_is_active(GTK_WINDOW(window1));
-    
     g_print("Window focus has updated.\n Window 1 activity status = %d\n" , window1IsActive);
     
     //get activity status of current window
@@ -119,23 +119,8 @@ void on_window1_focus_changed(GObject *o, GParamSpec *gpspec, gpointer user_data
     {
         g_thread_new("globalListen", (GThreadFunc)start_global_listen, NULL);
     }
-    
-    //if the status is not in focus and listening is true
-        //start listening for hotkey in a global hotkey listener script
-            //(this should end once focus comes back to the app window...
-            //because the program is still listening and there is no way to undo listening unless in focus)
-    //if the status has changed back to focus
-        //end the global listener
+    else {return;}
 }
-
-/*
-other things to add:
-1. add Title
-2. add a setting to choose hotkey
-3. ...
-
-*/
-
 
 
 

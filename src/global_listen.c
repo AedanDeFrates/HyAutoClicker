@@ -1,32 +1,36 @@
 #include "shared.h"
-#include <X11/Xlib.h>
-#include <X11/keysym.h>
 
 void start_global_listen()
 {
-    //If the start button is not activated then the program simply cannot be run with a hotkey
-    //And since the program cannot listen unless the window is active, and the if the window is active
-    //Then the standard gtk signal works fine
-    //Thus this prog terminates
-    if(!listening)
-    {
-        return;
-    }
     
-    Display *display = XOpenDisplay(NULL);
-    if(!display){g_print("Failed to open display"); return;}
+    if(!listening) {g_print("Program is not listening... terminating global listening process\n"); return;}
+    g_print("global listening has started\n");
     
-    Window root = DefaultRootWindow(display);
-    unsigned int modifiers = ControlMask | Mod1Mask;
-    int keycode = XKeysymToKeycode(display, XK_A);
+    Display *d = XOpenDisplay(NULL); if(!d){g_print("Failed to open display"); return;}
+    Window root = DefaultRootWindow(d);
+    XEvent ev;
+    
+    int keycode = XKeysymToKeycode(d, XK_F8);
+    unsigned int modifiers = AnyModifier; //Can add settings or functionality for modifiers later
+    
+    XGrabKey(d, keycode, modifiers, root, True, GrabModeAsync, GrabModeAsync);
+    
+    XSelectInput(d, root, KeyPressMask);
+    XSync(d, False);
     
     while(!window1IsActive)
     {
-        
-        g_usleep(10000);
-        
+        g_print("loop has started\n");
+        XNextEvent(d, &ev);
+        if (ev.type == KeyPress)
+        {
+            g_print("key has been pressed\n");
+            hotkeyIsActive = !hotkeyIsActive;
+            g_print("hotkey is: %d\n" , hotkeyIsActive);
+            g_thread_new("autoclicker_global", (GThreadFunc)start_auto_clicker, GINT_TO_POINTER(cpsVal));
+        }
+        else { g_print("hotkey has not been pressed\n");}
+        g_usleep(1000);
     }
+    g_print("loop has ended\n");
 }
-
-//VERY IMPORTANT
-//g_idle_add((GSourceFunc)on_hotkey_press, NULL);

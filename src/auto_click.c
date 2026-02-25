@@ -57,7 +57,7 @@ gpointer start_auto_clicker(gpointer arg)
         ev.value = 0;
         write(fd, &ev, sizeof(ev));        
 
-        g_usleep(10000);
+        g_usleep(100);
 
         gettimeofday(&ev.time, NULL);
         ev.type = EV_KEY;
