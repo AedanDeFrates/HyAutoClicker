@@ -40,6 +40,8 @@ volatile gboolean hotkeyChangeMode = FALSE;
 volatile gboolean window1IsActive = FALSE;
 volatile gint cpsVal = 0;
 
+volatile struct input_event clickType;
+
 //==============================
 // Global function delclarations
 //==============================
@@ -207,13 +209,11 @@ void on_changeHotkeyToggle_toggled()
     hotkeyChangeMode = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(changeHotkeyToggle));
     if(curr != fixed2)
     {
-        g_print("Hotkey Change Toggled, but not in settings tab\n");
-        return;
+        g_print("Hotkey Change Toggled, but not in settings tab\n"); return;
     }
     if(!hotkeyChangeMode)
     {
-        g_print("Hotkey Change Toggled OFF\n");
-        return;
+        g_print("Hotkey Change Toggled OFF\n"); return;
     }
 
     g_thread_new("hotkeyChangeListen", (GThreadFunc)start_hotkey_change_listen, NULL);
@@ -225,6 +225,9 @@ void on_rightClickRadio_toggled()
     if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(rightClickRadio))) 
     { g_print("Right Click Toggled OFF\n"); return; }
     g_print("Right Click Toggled ON\n");
+
+    clickType.code = BTN_RIGHT;
+    g_print("clickType.code set to: %d\n", clickType.code);
 }
 
 void on_leftClickRadio_toggled()
@@ -232,4 +235,7 @@ void on_leftClickRadio_toggled()
     if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(leftClickRadio))) 
     { g_print("Left Click Radio Toggled OFF\n"); return; }
     g_print("Left Click Radio Toggled ON\n");
+
+    clickType.code = BTN_LEFT;
+    g_print("clickType.code set to: %d\n", clickType.code); 
 }

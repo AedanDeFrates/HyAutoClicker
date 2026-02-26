@@ -1,7 +1,3 @@
-#include <fcntl.h>
-#include <linux/uinput.h>
-#include <sys/ioctl.h>
-
 #include "shared.h"
 
 gpointer start_auto_clicker(gpointer arg)
