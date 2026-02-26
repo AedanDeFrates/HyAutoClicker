@@ -23,6 +23,9 @@ GtkWidget   *helpTab;
 
 GtkWidget   *spinCPS;
 GtkWidget   *toggleListen;
+GtkWidget   *changeHotkeyToggle;
+GtkWidget   *rightClickRadio;
+GtkWidget   *leftClickRadio;
 
 GtkBuilder  *builder;
 
@@ -72,7 +75,6 @@ int main(int argc, char *argv[])
     //==========================================
 
     g_signal_connect(window1, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    
     gtk_builder_connect_signals(builder, NULL);
 
     //================================================================
@@ -85,17 +87,21 @@ int main(int argc, char *argv[])
     stack1       = GTK_STACK(gtk_builder_get_object(builder, "stack1"));
     menu         = GTK_WIDGET(gtk_builder_get_object(builder, "menu"));
 
+    //Buttons, spin buttons, and radio buttons
     spinCPS      = GTK_WIDGET(gtk_builder_get_object(builder, "spinCPS"));
     toggleListen = GTK_WIDGET(gtk_builder_get_object(builder, "toggleListen"));
-
+    rightClickRadio = GTK_WIDGET(gtk_builder_get_object(builder, "rightClickRadio"));
+    leftClickRadio = GTK_WIDGET(gtk_builder_get_object(builder, "leftClickRadio"));
+    changeHotkeyToggle = GTK_WIDGET(gtk_builder_get_object(builder, "changeHotkeyToggle"));
     
+    //Tabs for the stack
     settingsTab = GTK_WIDGET(gtk_builder_get_object(builder, "settingsTab"));
     autoClickerTab   = GTK_WIDGET(gtk_builder_get_object(builder, "autoClickerTab"));
     helpTab   = GTK_WIDGET(gtk_builder_get_object(builder, "helpTab"));
 
     cpsVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS));
     
-    //Offscreen settings and its initial containers
+    //Containers for the stack
     fixed1   = GTK_WIDGET(gtk_builder_get_object(builder, "fixed1"));
     fixed2   = GTK_WIDGET(gtk_builder_get_object(builder, "fixed2"));
 
@@ -163,14 +169,37 @@ void on_window1_focus_changed(GObject *o, GParamSpec *gpspec, gpointer user_data
     else {return;}
 }
 
+/*
+ * Function recieves signal from the activation of the settings tab.
+ * It sets the visible child of the stack to fixed2, which contains the settings tab
+*/
 void on_settingsTab_activate(GtkWidget *w)
 {
     gtk_stack_set_visible_child(stack1, fixed2);
     g_print("Settings Activated\n");
 }
 
+/*
+ * Function recieves signal from the activation of the auto clicker tab.
+ * It sets the visible child of the stack to fixed1, which contains the auto clicker tab
+*/
 void on_autoClickerTab_activate(GtkWidget *w)
 {
     gtk_stack_set_visible_child(stack1, fixed1);
     g_print("Auto Clicker Activated\n");
+}
+
+void on_changeHotkeyToggle_toggled()
+{
+    g_print("Change Hotkey Toggled\n");
+}
+
+void on_rightClickRadio_toggled()
+{
+    g_print("Right Click Radio Toggled\n");
+}
+
+void on_leftClickRadio_toggled()
+{
+    g_print("Left Click Radio Toggled\n");
 }
