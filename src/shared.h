@@ -10,6 +10,7 @@
 extern volatile bool hotkeyIsActive;
 extern volatile gboolean listening;
 extern volatile gboolean window1IsActive;
+extern volatile gboolean hotkeyChangeMode;
 extern volatile gint cpsVal;
 
 gboolean on_hotkey_press(GtkWidget *w, GdkEventKey *e);

@@ -41,8 +41,6 @@ gpointer start_auto_clicker(gpointer arg)
     struct input_event ev;    
     memset(&ev, 0, sizeof(ev));
     
-    g_usleep(1);
-    
     while(hotkeyIsActive && listening)
     {
         gettimeofday(&ev.time, NULL);

@@ -1,5 +1,6 @@
 #include "shared.h"
 #include "global_listen.h"
+#include "change_hotkey.h"
 
 
 //=============================================================
@@ -209,18 +210,26 @@ void on_changeHotkeyToggle_toggled()
         g_print("Hotkey Change Toggled, but not in settings tab\n");
         return;
     }
+    if(!hotkeyChangeMode)
+    {
+        g_print("Hotkey Change Toggled OFF\n");
+        return;
+    }
 
+    g_thread_new("hotkeyChangeListen", (GThreadFunc)start_hotkey_change_listen, NULL);
     g_print("listening for hotkey change\n");
 }
 
 void on_rightClickRadio_toggled()
 {
-    if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(rightClickRadio))) { g_print("Right Click Toggled OFF\n"); return; }
+    if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(rightClickRadio))) 
+    { g_print("Right Click Toggled OFF\n"); return; }
     g_print("Right Click Toggled ON\n");
 }
 
 void on_leftClickRadio_toggled()
 {
-    if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(leftClickRadio))) { g_print("Left Click Radio Toggled OFF\n"); return; }
+    if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(leftClickRadio))) 
+    { g_print("Left Click Radio Toggled OFF\n"); return; }
     g_print("Left Click Radio Toggled ON\n");
 }

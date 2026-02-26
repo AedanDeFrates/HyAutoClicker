@@ -25,6 +25,6 @@ void start_global_listen()
             hotkeyIsActive = !hotkeyIsActive;
             g_thread_new("autoclicker_global", (GThreadFunc)start_auto_clicker, GINT_TO_POINTER(cpsVal));
         }
-        g_usleep(1);
+        g_usleep(100);
     }
 }
