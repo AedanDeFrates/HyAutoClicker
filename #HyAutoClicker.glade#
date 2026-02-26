@@ -35,19 +35,20 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <child>
+              <object class="GtkMenuItem" id="autoClicker">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">_AutoClicker</property>
+                <property name="use-underline">True</property>
+              </object>
+            </child>
+            <child>
               <object class="GtkMenuItem" id="settings">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">_Settings</property>
                 <property name="use-underline">True</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="view">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">_View</property>
-                <property name="use-underline">True</property>
+                <signal name="activate" handler="on_settings_activate" swapped="no"/>
               </object>
             </child>
             <child>
@@ -120,7 +121,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkActionBar" id="actionBar">
+          <object class="GtkActionBar" id="actionBar1">
             <property name="width-request">-1</property>
             <property name="height-request">-1</property>
             <property name="visible">True</property>
