@@ -16,45 +16,168 @@
     <signal name="value-changed" handler="on_spinCPS_value_changed" swapped="no"/>
   </object>
   <object class="GtkWindow" id="window1">
+    <property name="width-request">-1</property>
+    <property name="height-request">-1</property>
     <property name="can-focus">False</property>
     <signal name="key-press-event" handler="on_hotkey_press" swapped="no"/>
     <signal name="notify" handler="on_window1_focus_changed" swapped="no"/>
     <child>
-      <object class="GtkFixed" id="container1">
+      <object class="GtkBox" id="box1">
+        <property name="width-request">-1</property>
+        <property name="height-request">-1</property>
         <property name="visible">True</property>
         <property name="can-focus">False</property>
+        <property name="hexpand">True</property>
+        <property name="vexpand">True</property>
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkSpinButton" id="spinCPS">
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="adjustment">adjustCPS</property>
-          </object>
-          <packing>
-            <property name="x">30</property>
-            <property name="y">170</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkToggleButton" id="toggleListen">
-            <property name="label" translatable="yes">Start</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <signal name="toggled" handler="on_toggleListen_toggled" swapped="no"/>
-          </object>
-          <packing>
-            <property name="x">30</property>
-            <property name="y">30</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="listenLabel">
+          <object class="GtkMenuBar" id="menu">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <child>
+              <object class="GtkMenuItem" id="autoClickerTab">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">_AutoClicker</property>
+                <property name="use-underline">True</property>
+                <signal name="activate" handler="on_autoClickerTab_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="settingsTab">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">_Settings</property>
+                <property name="use-underline">True</property>
+                <signal name="activate" handler="on_settingsTab_activate" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="helpTab">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">_Help</property>
+                <property name="use-underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkImageMenuItem">
+                        <property name="label">gtk-about</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="use-underline">True</property>
+                        <property name="use-stock">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
           <packing>
-            <property name="x">317</property>
-            <property name="y">239</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStack" id="stack1">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkFixed" id="fixed1">
+                <property name="width-request">32</property>
+                <property name="height-request">32</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <child>
+                  <object class="GtkSpinButton" id="spinCPS">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="text" translatable="yes">7</property>
+                    <property name="adjustment">adjustCPS</property>
+                    <property name="value">7</property>
+                  </object>
+                  <packing>
+                    <property name="x">30</property>
+                    <property name="y">163</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToggleButton" id="toggleListen">
+                    <property name="label" translatable="yes">Start</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">True</property>
+                    <signal name="toggled" handler="on_toggleListen_toggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="x">30</property>
+                    <property name="y">80</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="name">page0</property>
+                <property name="title" translatable="yes">page0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkFixed" id="fixed2">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <child>
+                  <object class="GtkLabel" id="settingsLabel">
+                    <property name="width-request">100</property>
+                    <property name="height-request">80</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="label" translatable="yes">Settings Tab is active</property>
+                    <attributes>
+                      <attribute name="font-desc" value="Serif Bold 12"/>
+                      <attribute name="foreground" value="#e0e01b1b2424"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="x">262</property>
+                    <property name="y">20</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="name">page1</property>
+                <property name="title" translatable="yes">page1</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkActionBar" id="actionBar1">
+            <property name="width-request">-1</property>
+            <property name="height-request">-1</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
