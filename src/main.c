@@ -5,19 +5,24 @@
 //=============================================================
 //  Global pointer delcarations for gtk widgets and the builder
 //=============================================================
+
+//Main window and its containers
 GtkWidget   *window1;
-GtkWidget   *container1;
+
 GtkWidget   *box1;
+GtkWidget   *menu;
+GtkStack    *stack1;
 GtkWidget   *actionBar1;
 
-GtkWidget   *menu;
-GtkWidget   *settingsHeader;
-GtkWidget   *viewHeader;
-GtkWidget   *helpHeader;
+GtkWidget   *fixed1;
+GtkWidget   *fixed2;
+
+GtkWidget   *autoClickerTab;
+GtkWidget   *settingsTab;
+GtkWidget   *helpTab;
 
 GtkWidget   *spinCPS;
 GtkWidget   *toggleListen;
-
 
 GtkBuilder  *builder;
 
@@ -73,20 +78,32 @@ int main(int argc, char *argv[])
     //================================================================
     //Gives the global pointers the values from the used GTK widgets
     //================================================================
-    container1   = GTK_WIDGET(gtk_builder_get_object(builder, "container1"));
+
+    //Main Window and its initial containers
     box1         = GTK_WIDGET(gtk_builder_get_object(builder, "box1"));
     actionBar1   = GTK_WIDGET(gtk_builder_get_object(builder, "actionBar1"));
+    stack1       = GTK_STACK(gtk_builder_get_object(builder, "stack1"));
+    menu         = GTK_WIDGET(gtk_builder_get_object(builder, "menu"));
 
     spinCPS      = GTK_WIDGET(gtk_builder_get_object(builder, "spinCPS"));
     toggleListen = GTK_WIDGET(gtk_builder_get_object(builder, "toggleListen"));
 
-    menu         = GTK_WIDGET(gtk_builder_get_object(builder, "menu"));
-    settingsHeader = GTK_WIDGET(gtk_builder_get_object(builder, "settingsHeader"));
-    viewHeader   = GTK_WIDGET(gtk_builder_get_object(builder, "viewHeader"));
-    helpHeader   = GTK_WIDGET(gtk_builder_get_object(builder, "helpHeader"));
+    
+    settingsTab = GTK_WIDGET(gtk_builder_get_object(builder, "settingsTab"));
+    autoClickerTab   = GTK_WIDGET(gtk_builder_get_object(builder, "autoClickerTab"));
+    helpTab   = GTK_WIDGET(gtk_builder_get_object(builder, "helpTab"));
 
     cpsVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS));
     
+    //Offscreen settings and its initial containers
+    fixed1   = GTK_WIDGET(gtk_builder_get_object(builder, "fixed1"));
+    fixed2   = GTK_WIDGET(gtk_builder_get_object(builder, "fixed2"));
+
+    g_print("stack1 pointer: %p\n", stack1);
+    g_print("settingsTab pointer: %p\n", settingsTab);
+    
+    gtk_stack_set_visible_child(stack1, fixed1);
+
     gtk_widget_show(window1);
     gtk_main();
     return EXIT_SUCCESS;
@@ -146,12 +163,14 @@ void on_window1_focus_changed(GObject *o, GParamSpec *gpspec, gpointer user_data
     else {return;}
 }
 
-void on_settings_activate()
+void on_settingsTab_activate(GtkWidget *w)
 {
-
+    gtk_stack_set_visible_child(stack1, fixed2);
+    g_print("Settings Activated\n");
 }
 
-void on_autoclicker_activate()
+void on_autoClickerTab_activate(GtkWidget *w)
 {
-
+    gtk_stack_set_visible_child(stack1, fixed1);
+    g_print("Auto Clicker Activated\n");
 }
