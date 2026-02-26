@@ -156,7 +156,7 @@
                     <property name="receives-default">False</property>
                     <property name="active">True</property>
                     <property name="draw-indicator">True</property>
-                    <signal name="toggled" handler="on_rightClick_toggled" swapped="no"/>
+                    <signal name="toggled" handler="on_rightClickRadio_toggled" swapped="no"/>
                   </object>
                   <packing>
                     <property name="x">320</property>

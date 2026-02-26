@@ -35,6 +35,7 @@ GtkBuilder  *builder;
 
 volatile bool hotkeyIsActive = false;
 volatile gboolean listening = FALSE;
+volatile gboolean hotkeyChangeMode = FALSE;
 volatile gboolean window1IsActive = FALSE;
 volatile gint cpsVal = 0;
 
@@ -123,7 +124,9 @@ int main(int argc, char *argv[])
  */
 void on_toggleListen_toggled(GtkToggleButton *b)
 {  
+    g_print("=======Listening toggled=======\n");
     listening = gtk_toggle_button_get_active(b);
+    g_print("Listening: %d\n", listening);
     if(listening && !hotkeyIsActive){gtk_button_set_label(GTK_BUTTON(b), "Listening...");}
     else gtk_button_set_label(GTK_BUTTON(b), "Start");
     gint spinVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS)); 
@@ -176,6 +179,10 @@ void on_window1_focus_changed(GObject *o, GParamSpec *gpspec, gpointer user_data
 void on_settingsTab_activate(GtkWidget *w)
 {
     gtk_stack_set_visible_child(stack1, fixed2);
+    if(listening)
+    {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggleListen), FALSE);
+    }
     g_print("Settings Activated\n");
 }
 
@@ -186,20 +193,34 @@ void on_settingsTab_activate(GtkWidget *w)
 void on_autoClickerTab_activate(GtkWidget *w)
 {
     gtk_stack_set_visible_child(stack1, fixed1);
+    if(hotkeyChangeMode)
+    {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(changeHotkeyToggle), FALSE);
+    }
     g_print("Auto Clicker Activated\n");
 }
 
 void on_changeHotkeyToggle_toggled()
 {
-    g_print("Change Hotkey Toggled\n");
+    GtkWidget *curr = gtk_stack_get_visible_child(GTK_STACK(stack1));
+    hotkeyChangeMode = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(changeHotkeyToggle));
+    if(curr != fixed2)
+    {
+        g_print("Hotkey Change Toggled, but not in settings tab\n");
+        return;
+    }
+
+    g_print("listening for hotkey change\n");
 }
 
 void on_rightClickRadio_toggled()
 {
-    g_print("Right Click Radio Toggled\n");
+    if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(rightClickRadio))) { g_print("Right Click Toggled OFF\n"); return; }
+    g_print("Right Click Toggled ON\n");
 }
 
 void on_leftClickRadio_toggled()
 {
-    g_print("Left Click Radio Toggled\n");
+    if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(leftClickRadio))) { g_print("Left Click Radio Toggled OFF\n"); return; }
+    g_print("Left Click Radio Toggled ON\n");
 }

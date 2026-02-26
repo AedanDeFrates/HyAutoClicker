@@ -147,7 +147,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkRadioButton" id="rightClic">
+                  <object class="GtkRadioButton" id="rightClickRadio">
                     <property name="label" translatable="yes">Right Click</property>
                     <property name="width-request">100</property>
                     <property name="height-request">80</property>
@@ -156,6 +156,7 @@
                     <property name="receives-default">False</property>
                     <property name="active">True</property>
                     <property name="draw-indicator">True</property>
+                    <signal name="toggled" handler="on_rightClick_toggled" swapped="no"/>
                   </object>
                   <packing>
                     <property name="x">320</property>
@@ -163,7 +164,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkRadioButton" id="leftClick">
+                  <object class="GtkRadioButton" id="leftClickRadio">
                     <property name="label" translatable="yes">Left Click</property>
                     <property name="width-request">100</property>
                     <property name="height-request">80</property>
@@ -172,8 +173,8 @@
                     <property name="receives-default">False</property>
                     <property name="active">True</property>
                     <property name="draw-indicator">True</property>
-                    <property name="group">rightClic</property>
-                    <signal name="toggled" handler="on_leftClick_toggled" swapped="no"/>
+                    <property name="group">rightClickRadio</property>
+                    <signal name="toggled" handler="on_leftClickRadio_toggled" swapped="no"/>
                   </object>
                   <packing>
                     <property name="x">216</property>
