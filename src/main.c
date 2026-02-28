@@ -17,6 +17,7 @@ GtkWidget   *actionBar1;
 
 GtkWidget   *fixed1;
 GtkWidget   *fixed2;
+GtkWidget   *fixed3;
 
 GtkWidget   *autoClickerTab;
 GtkWidget   *settingsTab;
@@ -98,7 +99,7 @@ int main(int argc, char *argv[])
     leftClickRadio = GTK_WIDGET(gtk_builder_get_object(builder, "leftClickRadio"));
     changeHotkeyToggle = GTK_WIDGET(gtk_builder_get_object(builder, "changeHotkeyToggle"));
     
-    //Tabs for the stack
+    //Tabs that switch container stack
     settingsTab = GTK_WIDGET(gtk_builder_get_object(builder, "settingsTab"));
     autoClickerTab   = GTK_WIDGET(gtk_builder_get_object(builder, "autoClickerTab"));
     helpTab   = GTK_WIDGET(gtk_builder_get_object(builder, "helpTab"));
@@ -108,6 +109,8 @@ int main(int argc, char *argv[])
     //Containers for the stack
     fixed1   = GTK_WIDGET(gtk_builder_get_object(builder, "fixed1"));
     fixed2   = GTK_WIDGET(gtk_builder_get_object(builder, "fixed2"));
+    fixed3   = GTK_WIDGET(gtk_builder_get_object(builder, "fixed3"));
+
 
     g_print("stack1 pointer: %p\n", stack1);
     g_print("settingsTab pointer: %p\n", settingsTab);
@@ -203,6 +206,13 @@ void on_autoClickerTab_activate(GtkWidget *w)
     g_print("Auto Clicker Activated\n");
 }
 
+void on_helpTab_activate(GtkWidget *w)
+{
+    gtk_stack_set_visible_child(stack1, fixed3);
+    if(listening){ gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggleListen), FALSE); }
+    else if(hotkeyChangeMode) { gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(changeHotkeyToggle), FALSE); }
+    g_print("Help Activated\n");
+}
 void on_changeHotkeyToggle_toggled()
 {
     GtkWidget *curr = gtk_stack_get_visible_child(GTK_STACK(stack1));
