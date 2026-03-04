@@ -15,6 +15,20 @@ GtkWidget   *menu;
 GtkStack    *stack1;
 GtkWidget   *actionBar1;
 
+//==============================================
+// New Interval Spin Button Pointer Declarations
+//==============================================
+
+GtkWidget   *intervalGrid;
+
+GtkWidget   *millisecondSpin;
+GtkWidget   *secondSpin;
+GtkWidget   *minuteSpin;
+GtkWidget   *hourSpin;
+
+//==============================================
+//==============================================
+
 GtkWidget   *fixed1;
 GtkWidget   *fixed2;
 GtkWidget   *fixed3;
@@ -111,6 +125,18 @@ int main(int argc, char *argv[])
     fixed2   = GTK_WIDGET(gtk_builder_get_object(builder, "fixed2"));
     fixed3   = GTK_WIDGET(gtk_builder_get_object(builder, "fixed3"));
 
+    //=============================================================
+    // New Interval CPS Spin Button Pointer Assignments
+    //=============================================================
+
+    intervalGrid = GTK_WIDGET(gtk_builder_get_object(builder, "intervalGrid"));
+
+    millisecondSpin = GTK_WIDGET(gtk_builder_get_object(builder, "millisecondSpin"));
+    secondSpin = GTK_WIDGET(gtk_builder_get_object(builder, "secondSpin"));
+    minuteSpin = GTK_WIDGET(gtk_builder_get_object(builder, "minuteSpin"));
+    hourSpin = GTK_WIDGET(gtk_builder_get_object(builder, "hourSpin"));
+
+    //=============================================================
 
     g_print("stack1 pointer: %p\n", stack1);
     g_print("settingsTab pointer: %p\n", settingsTab);
