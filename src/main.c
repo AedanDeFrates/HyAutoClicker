@@ -55,6 +55,18 @@ volatile gboolean hotkeyChangeMode = FALSE;
 volatile gboolean window1IsActive = FALSE;
 volatile gint cpsVal = 0;
 
+//==========================================
+// New Global Variables for Click Interval
+//==========================================
+
+volatile gint clickIntervalMilliseconds = 0;
+volatile gint clickIntervalSeconds = 1000;
+volatile gint clickIntervalMinutes = 0;
+volatile gint clickIntervalHours = 0;
+
+volatile gint clickIntervalTotal = 1000;
+
+//Input event for click type
 volatile struct input_event clickType;
 
 //==============================
@@ -194,20 +206,31 @@ void on_spinCPS_value_changed()
 // New Signal Handler Functions for Interval Spin Buttons
 //==============================================================
 
+/*
+Millisecond -> 1
+Second -> 1000
+Minute -> 60000
+Hour -> 3600000
+*/
+
 void on_adjustMillisecond_value_changed()
 {
+    clickIntervalMilliseconds = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(millisecondSpin));
     g_print("Millisecond Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(millisecondSpin)));
 }
 void on_adjustSecond_value_changed()
 {
+    clickIntervalSeconds = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(secondSpin));
     g_print("Second Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(secondSpin)));
 }
 void on_adjustMinute_value_changed()
 {
+    clickIntervalMinutes = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(minuteSpin));
     g_print("Minute Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(minuteSpin)));
 }
 void on_adjustHour_value_changed()
 {
+    clickIntervalHours = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(hourSpin));
     g_print("Hour Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(hourSpin)));
 }
 
