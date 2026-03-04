@@ -19,22 +19,26 @@
     <property name="upper">1</property>
     <property name="step-increment">1</property>
     <property name="page-increment">10</property>
+    <signal name="value-changed" handler="on_adjustHour_value_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="adjustMillisecond">
     <property name="upper">999</property>
     <property name="step-increment">1</property>
     <property name="page-increment">10</property>
     <property name="page-size">2.2351741811588166e-10</property>
+    <signal name="value-changed" handler="on_adjustMillisecond_value_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="adjustMinute">
     <property name="upper">59</property>
     <property name="step-increment">1</property>
     <property name="page-increment">10</property>
+    <signal name="value-changed" handler="on_adjustMinute_value_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="adjustSecond">
     <property name="upper">59</property>
     <property name="step-increment">1</property>
     <property name="page-increment">10</property>
+    <signal name="value-changed" handler="on_adjustSecond_value_changed" swapped="no"/>
   </object>
   <object class="GtkWindow" id="window1">
     <property name="width-request">-1</property>

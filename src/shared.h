@@ -20,6 +20,9 @@ extern volatile gboolean hotkeyChangeMode;
 //Global variable for CPS value, used in the auto clicker thread
 extern volatile gint cpsVal;
 
+//Global variable for the click interval. To be assigned in main, and used in the auto click
+extern volatile gint *clickInterval;
+
 //Global variable to set the type of click to be used
 extern volatile struct input_event clickType;
 

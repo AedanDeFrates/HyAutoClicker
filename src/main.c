@@ -81,8 +81,8 @@ int main(int argc, char *argv[])
     // Setting the min and max for the window
     //=========================================
     GdkGeometry win1Geometry;
-    win1Geometry.min_width = 400;
-    win1Geometry.min_height = 200;
+    win1Geometry.min_width = 600;
+    win1Geometry.min_height = 300;
 
     win1Geometry.max_width = 800;
     win1Geometry.max_height = 400;
@@ -190,6 +190,31 @@ void on_spinCPS_value_changed()
     g_print("CPS set to: %d", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS)));
     cpsVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS));
 }
+//==============================================================
+// New Signal Handler Functions for Interval Spin Buttons
+//==============================================================
+
+void on_adjustMillisecond_value_changed()
+{
+    g_print("Millisecond Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(millisecondSpin)));
+}
+void on_adjustSecond_value_changed()
+{
+    g_print("Second Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(secondSpin)));
+}
+void on_adjustMinute_value_changed()
+{
+    g_print("Minute Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(minuteSpin)));
+}
+void on_adjustHour_value_changed()
+{
+    g_print("Hour Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(hourSpin)));
+}
+
+//==============================================================
+//==============================================================
+
+
 
 /*
  * Function recieves signal from a change in the focus of the main window.
