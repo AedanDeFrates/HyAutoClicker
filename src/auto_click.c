@@ -2,6 +2,7 @@
 
 gpointer start_auto_clicker(gpointer arg)
 {
+    g_print("Auto Clicker Thread Started\nClick Type: %d\nCPS: %d\n", clickType.code, GPOINTER_TO_INT(arg));
     int cps = GPOINTER_TO_INT(arg); 
     int fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
     if (fd < 0)
@@ -41,13 +42,13 @@ gpointer start_auto_clicker(gpointer arg)
     {
         gettimeofday(&ev.time, NULL);
         ev.type = EV_KEY;
-        ev.code = BTN_LEFT;
+        ev.code = clickType.code; //BTN_LEFT or BTN_RIGHT
         ev.value = 1;
         write(fd, &ev, sizeof(ev));
 
         gettimeofday(&ev.time, NULL);
         ev.type = EV_SYN;
-        ev.code = SYN_REPORT;
+        ev.code = SYN_REPORT; //Indicates the end of an event sequence
         ev.value = 0;
         write(fd, &ev, sizeof(ev));        
 
@@ -55,7 +56,7 @@ gpointer start_auto_clicker(gpointer arg)
 
         gettimeofday(&ev.time, NULL);
         ev.type = EV_KEY;
-        ev.code = BTN_LEFT;
+        ev.code = clickType.code; //BTN_LEFT or BTN_RIGHT
         ev.value = 0;
         write(fd, &ev, sizeof(ev));
         
@@ -64,8 +65,17 @@ gpointer start_auto_clicker(gpointer arg)
         ev.code = SYN_REPORT;
         ev.value = 0;
         write(fd, &ev, sizeof(ev));
- 
+        
         g_usleep(1000000 / cps);
+
+        if(clickType.code == BTN_LEFT)
+        {
+            g_print("Left Click Sent\n");
+        }
+        else if(clickType.code == BTN_RIGHT)
+        {
+            g_print("Right Click Sent\n");
+        }
     }
     
     if(hotkeyIsActive && !listening)
