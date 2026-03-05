@@ -1,7 +1,10 @@
-#include "shared.h"
+#include "shared_vars.h"
+#include "interval_sum.h"
 
 gpointer start_auto_clicker(gpointer arg)
 {
+    //clickIntervalTotal = sum_all_intervals();
+
     g_print("Auto Clicker Thread Started\nClick Type: %d\nCPS: %d\n", clickType.code, GPOINTER_TO_INT(arg));
     int cps = GPOINTER_TO_INT(arg); 
     int fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
