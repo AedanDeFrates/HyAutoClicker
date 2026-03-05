@@ -1,4 +1,5 @@
 #include "shared_vars.h"
+#include "auto_click.h"
 
 void start_global_listen()
 {

@@ -1,6 +1,7 @@
 #include "shared_vars.h"
 #include "global_listen.h"
 #include "change_hotkey.h"
+#include "auto_click.h"
 
 
 //=============================================================
@@ -74,7 +75,7 @@ volatile struct input_event clickType;
 //==============================
 
 void on_window1_focus_changed(GObject *o, GParamSpec *gpspec, gpointer user_data);
-
+gboolean on_hotkey_press(GtkWidget *w, GdkEventKey *e);
 
 int main(int argc, char *argv[])
 {  
