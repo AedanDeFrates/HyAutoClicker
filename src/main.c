@@ -1,6 +1,7 @@
-#include "shared.h"
+#include "shared_vars.h"
 #include "global_listen.h"
 #include "change_hotkey.h"
+#include "auto_click.h"
 
 
 //=============================================================
@@ -14,6 +15,20 @@ GtkWidget   *box1;
 GtkWidget   *menu;
 GtkStack    *stack1;
 GtkWidget   *actionBar1;
+
+//==============================================
+// New Interval Spin Button Pointer Declarations
+//==============================================
+
+GtkWidget   *intervalGrid;
+
+GtkWidget   *millisecondSpin;
+GtkWidget   *secondSpin;
+GtkWidget   *minuteSpin;
+GtkWidget   *hourSpin;
+
+//==============================================
+//==============================================
 
 GtkWidget   *fixed1;
 GtkWidget   *fixed2;
@@ -41,6 +56,18 @@ volatile gboolean hotkeyChangeMode = FALSE;
 volatile gboolean window1IsActive = FALSE;
 volatile gint cpsVal = 0;
 
+//==========================================
+// New Global Variables for Click Interval
+//==========================================
+
+volatile gint clickIntervalMilliseconds = 0;
+volatile gint clickIntervalSeconds = 1000;
+volatile gint clickIntervalMinutes = 0;
+volatile gint clickIntervalHours = 0;
+
+volatile gint clickIntervalTotal = 1000;
+
+//Input event for click type
 volatile struct input_event clickType;
 
 //==============================
@@ -48,7 +75,7 @@ volatile struct input_event clickType;
 //==============================
 
 void on_window1_focus_changed(GObject *o, GParamSpec *gpspec, gpointer user_data);
-
+gboolean on_hotkey_press(GtkWidget *w, GdkEventKey *e);
 
 int main(int argc, char *argv[])
 {  
@@ -67,8 +94,8 @@ int main(int argc, char *argv[])
     // Setting the min and max for the window
     //=========================================
     GdkGeometry win1Geometry;
-    win1Geometry.min_width = 400;
-    win1Geometry.min_height = 200;
+    win1Geometry.min_width = 600;
+    win1Geometry.min_height = 300;
 
     win1Geometry.max_width = 800;
     win1Geometry.max_height = 400;
@@ -93,16 +120,16 @@ int main(int argc, char *argv[])
     menu         = GTK_WIDGET(gtk_builder_get_object(builder, "menu"));
 
     //Buttons, spin buttons, and radio buttons
-    spinCPS      = GTK_WIDGET(gtk_builder_get_object(builder, "spinCPS"));
-    toggleListen = GTK_WIDGET(gtk_builder_get_object(builder, "toggleListen"));
-    rightClickRadio = GTK_WIDGET(gtk_builder_get_object(builder, "rightClickRadio"));
-    leftClickRadio = GTK_WIDGET(gtk_builder_get_object(builder, "leftClickRadio"));
+    spinCPS             = GTK_WIDGET(gtk_builder_get_object(builder, "spinCPS"));
+    toggleListen        = GTK_WIDGET(gtk_builder_get_object(builder, "toggleListen"));
+    rightClickRadio     = GTK_WIDGET(gtk_builder_get_object(builder, "rightClickRadio"));
+    leftClickRadio      = GTK_WIDGET(gtk_builder_get_object(builder, "leftClickRadio"));
     changeHotkeyToggle = GTK_WIDGET(gtk_builder_get_object(builder, "changeHotkeyToggle"));
     
     //Tabs that switch container stack
-    settingsTab = GTK_WIDGET(gtk_builder_get_object(builder, "settingsTab"));
-    autoClickerTab   = GTK_WIDGET(gtk_builder_get_object(builder, "autoClickerTab"));
-    helpTab   = GTK_WIDGET(gtk_builder_get_object(builder, "helpTab"));
+    settingsTab     = GTK_WIDGET(gtk_builder_get_object(builder, "settingsTab"));
+    autoClickerTab  = GTK_WIDGET(gtk_builder_get_object(builder, "autoClickerTab"));
+    helpTab         = GTK_WIDGET(gtk_builder_get_object(builder, "helpTab"));
 
     cpsVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS));
     
@@ -111,6 +138,16 @@ int main(int argc, char *argv[])
     fixed2   = GTK_WIDGET(gtk_builder_get_object(builder, "fixed2"));
     fixed3   = GTK_WIDGET(gtk_builder_get_object(builder, "fixed3"));
 
+    //=============================================================
+    // New Interval CPS Spin Button Pointer Assignments
+    //=============================================================
+
+    intervalGrid = GTK_WIDGET(gtk_builder_get_object(builder, "intervalGrid"));
+
+    millisecondSpin = GTK_WIDGET(gtk_builder_get_object(builder, "millisecondSpin"));
+    secondSpin      = GTK_WIDGET(gtk_builder_get_object(builder, "secondSpin"));
+    minuteSpin      = GTK_WIDGET(gtk_builder_get_object(builder, "minuteSpin"));
+    hourSpin        = GTK_WIDGET(gtk_builder_get_object(builder, "hourSpin"));
 
     g_print("stack1 pointer: %p\n", stack1);
     g_print("settingsTab pointer: %p\n", settingsTab);
@@ -163,6 +200,37 @@ void on_spinCPS_value_changed()
 {
     g_print("CPS set to: %d", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS)));
     cpsVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS));
+}
+//==============================================================
+// New Signal Handler Functions for Interval Spin Buttons
+//==============================================================
+
+/*
+Millisecond -> 1
+Second -> 1000
+Minute -> 60000
+Hour -> 3600000
+*/
+
+void on_adjustMillisecond_value_changed()
+{
+    clickIntervalMilliseconds = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(millisecondSpin));
+    g_print("Millisecond Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(millisecondSpin)));
+}
+void on_adjustSecond_value_changed()
+{
+    clickIntervalSeconds = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(secondSpin));
+    g_print("Second Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(secondSpin)));
+}
+void on_adjustMinute_value_changed()
+{
+    clickIntervalMinutes = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(minuteSpin));
+    g_print("Minute Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(minuteSpin)));
+}
+void on_adjustHour_value_changed()
+{
+    clickIntervalHours = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(hourSpin));
+    g_print("Hour Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(hourSpin)));
 }
 
 /*

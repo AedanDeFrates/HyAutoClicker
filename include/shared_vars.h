@@ -20,11 +20,15 @@ extern volatile gboolean hotkeyChangeMode;
 //Global variable for CPS value, used in the auto clicker thread
 extern volatile gint cpsVal;
 
+//Global variable for the click interval. To be assigned in main, and used in the auto click
+extern volatile gint clickIntervalMilliseconds;
+extern volatile gint clickIntervalSeconds;
+extern volatile gint clickIntervalMinutes;
+extern volatile gint clickIntervalHours;
+
+extern volatile gint clickIntervalTotal;
+
 //Global variable to set the type of click to be used
 extern volatile struct input_event clickType;
-
-//Global function declarations for gtk signal handlers and threads
-gboolean on_hotkey_press(GtkWidget *w, GdkEventKey *e);
-gpointer start_auto_clicker(gpointer data);
 
 #endif
