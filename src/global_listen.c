@@ -1,4 +1,4 @@
-#include "shared.h"
+#include "shared_vars.h"
 
 void start_global_listen()
 {

@@ -1,4 +1,4 @@
-#include "shared.h"
+#include "shared_vars.h"
 
 gint sum_all_intervals()
 {
@@ -7,10 +7,10 @@ gint sum_all_intervals()
     if(x == 0)
     {
         g_print("Error: Click Interval is 0... resetting to 1000 milliseconds\n");
-        gtk_spin_button_set_value(GTK_SPIN_BUTTON(millisecondSpin), 0);
-        gtk_spin_button_set_value(GTK_SPIN_BUTTON(secondSpin), 1);
-        gtk_spin_button_set_value(GTK_SPIN_BUTTON(minuteSpin), 0);
-        gtk_spin_button_set_value(GTK_SPIN_BUTTON(hourSpin), 0);
+        //gtk_spin_button_set_value(GTK_SPIN_BUTTON(millisecondSpin), 0);
+        //gtk_spin_button_set_value(GTK_SPIN_BUTTON(secondSpin), 1);
+        //gtk_spin_button_set_value(GTK_SPIN_BUTTON(minuteSpin), 0);
+        //gtk_spin_button_set_value(GTK_SPIN_BUTTON(hourSpin), 0);
 
         x = 1000;
     }

@@ -1,4 +1,4 @@
-#include "shared.h"
+#include "shared_vars.h"
 #include "global_listen.h"
 #include "change_hotkey.h"
 
@@ -148,8 +148,6 @@ int main(int argc, char *argv[])
     minuteSpin      = GTK_WIDGET(gtk_builder_get_object(builder, "minuteSpin"));
     hourSpin        = GTK_WIDGET(gtk_builder_get_object(builder, "hourSpin"));
 
-    //=============================================================
-
     g_print("stack1 pointer: %p\n", stack1);
     g_print("settingsTab pointer: %p\n", settingsTab);
     
@@ -233,11 +231,6 @@ void on_adjustHour_value_changed()
     clickIntervalHours = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(hourSpin));
     g_print("Hour Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(hourSpin)));
 }
-
-//==============================================================
-//==============================================================
-
-
 
 /*
  * Function recieves signal from a change in the focus of the main window.
