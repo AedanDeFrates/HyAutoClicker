@@ -119,16 +119,16 @@ int main(int argc, char *argv[])
     menu         = GTK_WIDGET(gtk_builder_get_object(builder, "menu"));
 
     //Buttons, spin buttons, and radio buttons
-    spinCPS      = GTK_WIDGET(gtk_builder_get_object(builder, "spinCPS"));
-    toggleListen = GTK_WIDGET(gtk_builder_get_object(builder, "toggleListen"));
-    rightClickRadio = GTK_WIDGET(gtk_builder_get_object(builder, "rightClickRadio"));
-    leftClickRadio = GTK_WIDGET(gtk_builder_get_object(builder, "leftClickRadio"));
+    spinCPS             = GTK_WIDGET(gtk_builder_get_object(builder, "spinCPS"));
+    toggleListen        = GTK_WIDGET(gtk_builder_get_object(builder, "toggleListen"));
+    rightClickRadio     = GTK_WIDGET(gtk_builder_get_object(builder, "rightClickRadio"));
+    leftClickRadio      = GTK_WIDGET(gtk_builder_get_object(builder, "leftClickRadio"));
     changeHotkeyToggle = GTK_WIDGET(gtk_builder_get_object(builder, "changeHotkeyToggle"));
     
     //Tabs that switch container stack
-    settingsTab = GTK_WIDGET(gtk_builder_get_object(builder, "settingsTab"));
-    autoClickerTab   = GTK_WIDGET(gtk_builder_get_object(builder, "autoClickerTab"));
-    helpTab   = GTK_WIDGET(gtk_builder_get_object(builder, "helpTab"));
+    settingsTab     = GTK_WIDGET(gtk_builder_get_object(builder, "settingsTab"));
+    autoClickerTab  = GTK_WIDGET(gtk_builder_get_object(builder, "autoClickerTab"));
+    helpTab         = GTK_WIDGET(gtk_builder_get_object(builder, "helpTab"));
 
     cpsVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS));
     
@@ -144,9 +144,9 @@ int main(int argc, char *argv[])
     intervalGrid = GTK_WIDGET(gtk_builder_get_object(builder, "intervalGrid"));
 
     millisecondSpin = GTK_WIDGET(gtk_builder_get_object(builder, "millisecondSpin"));
-    secondSpin = GTK_WIDGET(gtk_builder_get_object(builder, "secondSpin"));
-    minuteSpin = GTK_WIDGET(gtk_builder_get_object(builder, "minuteSpin"));
-    hourSpin = GTK_WIDGET(gtk_builder_get_object(builder, "hourSpin"));
+    secondSpin      = GTK_WIDGET(gtk_builder_get_object(builder, "secondSpin"));
+    minuteSpin      = GTK_WIDGET(gtk_builder_get_object(builder, "minuteSpin"));
+    hourSpin        = GTK_WIDGET(gtk_builder_get_object(builder, "hourSpin"));
 
     //=============================================================
 

@@ -34,6 +34,5 @@ extern volatile struct input_event clickType;
 //Global function declarations for gtk signal handlers and threads
 gboolean on_hotkey_press(GtkWidget *w, GdkEventKey *e);
 gpointer start_auto_clicker(gpointer data);
-gint sum_all_intervals();
 
 #endif
