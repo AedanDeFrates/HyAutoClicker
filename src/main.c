@@ -61,7 +61,7 @@ volatile gint cpsVal = 0;
 //==========================================
 
 volatile gint clickIntervalMilliseconds = 0;
-volatile gint clickIntervalSeconds = 1000;
+volatile gint clickIntervalSeconds = 1;
 volatile gint clickIntervalMinutes = 0;
 volatile gint clickIntervalHours = 0;
 
@@ -211,26 +211,40 @@ Second -> 1000
 Minute -> 60000
 Hour -> 3600000
 */
+void interval_value_changed()
+{
+    clickIntervalTotal = clickIntervalMilliseconds + clickIntervalSeconds * 1000 + clickIntervalMinutes * 60000 + clickIntervalHours * 3600000;
+
+    g_print("Click Interval set to: %d milliseconds\n", clickIntervalTotal);
+}
 
 void on_adjustMillisecond_value_changed()
 {
     clickIntervalMilliseconds = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(millisecondSpin));
     g_print("Millisecond Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(millisecondSpin)));
+
+    interval_value_changed();
 }
 void on_adjustSecond_value_changed()
 {
     clickIntervalSeconds = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(secondSpin));
     g_print("Second Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(secondSpin)));
+
+    interval_value_changed();
 }
 void on_adjustMinute_value_changed()
 {
     clickIntervalMinutes = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(minuteSpin));
     g_print("Minute Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(minuteSpin)));
+
+    interval_value_changed();
 }
 void on_adjustHour_value_changed()
 {
     clickIntervalHours = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(hourSpin));
     g_print("Hour Interval set to: %d\n", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(hourSpin)));
+
+    interval_value_changed();
 }
 
 /*
