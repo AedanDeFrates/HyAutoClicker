@@ -1,14 +1,12 @@
 #include "shared_vars.h"
 
-gpointer start_auto_clicker(gpointer arg)
+void start_auto_clicker()
 {
-    g_print("Auto Clicker Thread Started\nClick Type: %d\nCPS: %d\n", clickType.code, GPOINTER_TO_INT(arg));
-    int cps = GPOINTER_TO_INT(arg); 
     int fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
     if (fd < 0)
     {
         perror("File Open Error");
-        return NULL;
+        return;
     }
     
     ioctl(fd, UI_SET_EVBIT, EV_KEY);
@@ -66,7 +64,8 @@ gpointer start_auto_clicker(gpointer arg)
         ev.value = 0;
         write(fd, &ev, sizeof(ev));
         
-        g_usleep(1000000 / cps);
+        //should change in the set function for clickIntervalTotal
+        g_usleep(clickIntervalTotal * 1000); //Convert milliseconds to microseconds for g_usleep
 
         if(clickType.code == BTN_LEFT)
         {
@@ -85,5 +84,5 @@ gpointer start_auto_clicker(gpointer arg)
     
     ioctl(fd, UI_DEV_DESTROY);
     close(fd);
-    return NULL;
+    return;
 }

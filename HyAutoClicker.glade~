@@ -7,14 +7,6 @@
     <property name="can-focus">False</property>
     <property name="limit">10</property>
   </object>
-  <object class="GtkAdjustment" id="adjustCPS">
-    <property name="lower">1</property>
-    <property name="upper">20</property>
-    <property name="value">7</property>
-    <property name="step-increment">1</property>
-    <property name="page-increment">10</property>
-    <signal name="value-changed" handler="on_spinCPS_value_changed" swapped="no"/>
-  </object>
   <object class="GtkAdjustment" id="adjustHour">
     <property name="upper">1</property>
     <property name="step-increment">1</property>
@@ -36,6 +28,7 @@
   </object>
   <object class="GtkAdjustment" id="adjustSecond">
     <property name="upper">59</property>
+    <property name="value">1</property>
     <property name="step-increment">1</property>
     <property name="page-increment">10</property>
     <signal name="value-changed" handler="on_adjustSecond_value_changed" swapped="no"/>
@@ -44,8 +37,6 @@
     <property name="width-request">-1</property>
     <property name="height-request">-1</property>
     <property name="can-focus">False</property>
-    <signal name="key-press-event" handler="on_hotkey_press" swapped="no"/>
-    <signal name="notify" handler="on_window1_focus_changed" swapped="no"/>
     <child>
       <object class="GtkBox" id="box1">
         <property name="width-request">-1</property>
@@ -105,19 +96,6 @@
                 <property name="can-focus">False</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <child>
-                  <object class="GtkSpinButton" id="spinCPS">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="text" translatable="yes">7</property>
-                    <property name="adjustment">adjustCPS</property>
-                    <property name="value">7</property>
-                  </object>
-                  <packing>
-                    <property name="x">30</property>
-                    <property name="y">163</property>
-                  </packing>
-                </child>
                 <child>
                   <object class="GtkToggleButton" id="toggleListen">
                     <property name="label" translatable="yes">Start</property>
@@ -267,7 +245,6 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="active">True</property>
                     <property name="draw-indicator">True</property>
                     <signal name="toggled" handler="on_rightClickRadio_toggled" swapped="no"/>
                   </object>
