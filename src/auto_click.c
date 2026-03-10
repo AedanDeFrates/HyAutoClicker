@@ -2,8 +2,6 @@
 
 void start_auto_clicker()
 {
-    //g_print("Auto Clicker Thread Started\nClick Type: %d\nCPS: %d\n", clickType.code, GPOINTER_TO_INT(arg));
-    //int cps = GPOINTER_TO_INT(arg); 
     int fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
     if (fd < 0)
     {

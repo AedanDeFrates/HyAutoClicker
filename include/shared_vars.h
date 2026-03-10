@@ -14,11 +14,7 @@
 //Globally used boolean variables for different program states
 extern volatile bool hotkeyIsActive;
 extern volatile gboolean listening;
-extern volatile gboolean window1IsActive;
 extern volatile gboolean hotkeyChangeMode;
-
-//Global variable for CPS value, used in the auto clicker thread
-extern volatile gint cpsVal;
 
 //Global variable for the click interval. To be assigned in main, and used in the auto click
 extern volatile gint clickIntervalMilliseconds;

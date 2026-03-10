@@ -37,7 +37,6 @@
     <property name="width-request">-1</property>
     <property name="height-request">-1</property>
     <property name="can-focus">False</property>
-    <signal name="notify" handler="on_window1_focus_changed" swapped="no"/>
     <child>
       <object class="GtkBox" id="box1">
         <property name="width-request">-1</property>
