@@ -244,7 +244,7 @@ void on_autoClickerTab_activate(GtkWidget *w)
     {
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(changeHotkeyToggle), FALSE);
     }
-    g_print("Auto Clicker Activated\n");
+    g_print("Auto Clicker Tab Activated\n");
 }
 
 void on_helpTab_activate(GtkWidget *w)

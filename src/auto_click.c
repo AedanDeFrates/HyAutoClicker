@@ -2,6 +2,8 @@
 
 void start_auto_clicker()
 {
+    g_print("Auto Clicker Thread Started\n");
+
     int fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
     if (fd < 0)
     {

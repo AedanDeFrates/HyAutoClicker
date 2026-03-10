@@ -23,6 +23,8 @@ void start_global_listen()
         XNextEvent(d, &ev);
         if (ev.type == KeyPress)
         {
+            g_print("Hotkey Pressed\n");
+            
             hotkeyIsActive = !hotkeyIsActive;
             if(hotkeyIsActive) { g_thread_new("autoclicker_global", (GThreadFunc)start_auto_clicker, NULL); }
         }
