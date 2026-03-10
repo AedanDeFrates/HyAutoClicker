@@ -39,7 +39,7 @@ GtkWidget   *settingsTab;
 GtkWidget   *helpTab;
 
 //to be removed after prioritizing GlobalListen thread for hotkey listening
-GtkWidget   *spinCPS;
+//GtkWidget   *spinCPS;
 
 GtkWidget   *toggleListen;
 GtkWidget   *changeHotkeyToggle;
@@ -55,10 +55,12 @@ GtkBuilder  *builder;
 volatile bool hotkeyIsActive = false;
 volatile gboolean listening = FALSE;
 volatile gboolean hotkeyChangeMode = FALSE;
-volatile gboolean window1IsActive = FALSE;
+
+//to be removed after prioritizing GlobalListen thread for hotkey listening
+//volatile gboolean window1IsActive = FALSE;
 
 //Can remove after prioritizing GlobalListen thread for hotkey listening
-volatile gint cpsVal = 0;
+//volatile gint cpsVal = 0;
 
 //==========================================
 // New Global Variables for Click Interval
@@ -78,10 +80,9 @@ volatile struct input_event clickType;
 // Global function delclarations
 //==============================
 
-void on_window1_focus_changed(GObject *o, GParamSpec *gpspec, gpointer user_data);
-
 //To be removed after prioritizing GlobalListen thread for hotkey listening
-gboolean on_hotkey_press(GtkWidget *w, GdkEventKey *e);
+//void on_window1_focus_changed(GObject *o, GParamSpec *gpspec, gpointer user_data);
+//gboolean on_hotkey_press(GtkWidget *w, GdkEventKey *e);
 
 int main(int argc, char *argv[])
 {  
@@ -127,7 +128,7 @@ int main(int argc, char *argv[])
 
     //Buttons, spin buttons, and radio buttons
         //To be removed after prioritizing GlobalListen thread for hotkey listening
-    spinCPS             = GTK_WIDGET(gtk_builder_get_object(builder, "spinCPS"));
+    //spinCPS             = GTK_WIDGET(gtk_builder_get_object(builder, "spinCPS"));
 
     toggleListen        = GTK_WIDGET(gtk_builder_get_object(builder, "toggleListen"));
     rightClickRadio     = GTK_WIDGET(gtk_builder_get_object(builder, "rightClickRadio"));
@@ -140,7 +141,7 @@ int main(int argc, char *argv[])
     helpTab         = GTK_WIDGET(gtk_builder_get_object(builder, "helpTab"));
 
     //to be removed after prioritizing GlobalListen thread for hotkey listening
-    cpsVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS));
+    //cpsVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS));
     
     //Containers for the stack
     fixed1   = GTK_WIDGET(gtk_builder_get_object(builder, "fixed1"));
@@ -182,13 +183,13 @@ void on_toggleListen_toggled(GtkToggleButton *b)
     g_print("Listening: %d\n", listening);
     if(listening && !hotkeyIsActive)
     {
-        gtk_button_set_label(GTK_BUTTON(b), "Listening...");
+        //gtk_button_set_label(GTK_BUTTON(b), "Listening...");
         g_thread_new("globalListen", (GThreadFunc)start_global_listen, NULL);
     }
     else gtk_button_set_label(GTK_BUTTON(b), "Start");
 
     //To be removed after prioritizing GlobalListen thread for hotkey listening
-    gint spinVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS)); 
+    //gint spinVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS)); 
 }
 
 /*
@@ -196,6 +197,7 @@ void on_toggleListen_toggled(GtkToggleButton *b)
 */
 //To be removed after prioritizing GlobalListen thread for hotkey listening
 //Also must remove the signal in glade
+/*
 gboolean on_hotkey_press(GtkWidget *w, GdkEventKey *e)
 {
     //Exits the function if listening is FALSE or if the event -> keyval is not the correct hotkey
@@ -209,17 +211,21 @@ gboolean on_hotkey_press(GtkWidget *w, GdkEventKey *e)
     }
     return FALSE;
 }
+*/
 
 /*
  * Function recieves signal from a change in the spin button.
  * It updates the global var cpsVal with the new CPS value and prints it to the console.
  */
  //To be removed
+ /*
 void on_spinCPS_value_changed()
 {
     g_print("CPS set to: %d", gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS)));
     cpsVal = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spinCPS));
 }
+**/
+
 //==============================================================
 // New Signal Handler Functions for Interval Spin Buttons
 //==============================================================
@@ -272,6 +278,7 @@ void on_adjustHour_value_changed()
  * If the main window is not active, it starts a new thread to listen for the hotkey globally. Otherwise, it returns.
 */
 //to be removed after prioritizing globalListen thread in listening button signal handler
+/*
 void on_window1_focus_changed(GObject *o, GParamSpec *gpspec, gpointer user_data)
 {
     window1IsActive = gtk_window_is_active(GTK_WINDOW(window1));
@@ -279,6 +286,7 @@ void on_window1_focus_changed(GObject *o, GParamSpec *gpspec, gpointer user_data
     if (!window1IsActive) { g_thread_new("globalListen", (GThreadFunc)start_global_listen, NULL);}
     else {return;}
 }
+*/
 
 /*
  * Function recieves signal from the activation of the settings tab.

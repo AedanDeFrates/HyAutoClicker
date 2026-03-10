@@ -3,7 +3,7 @@
 
 void start_global_listen()
 {
-    
+    g_print("Global Listen Thread Started\n");
     if(!listening) { return; }
     
     Display *d = XOpenDisplay(NULL); if(!d){g_print("Failed to open display"); return;}
@@ -24,7 +24,7 @@ void start_global_listen()
         if (ev.type == KeyPress)
         {
             hotkeyIsActive = !hotkeyIsActive;
-            if(hotkeyIsActive) { g_thread_new("autoclicker_global", (GThreadFunc)start_auto_clicker, GINT_TO_POINTER(cpsVal)); }
+            if(hotkeyIsActive) { g_thread_new("autoclicker_global", (GThreadFunc)start_auto_clicker, NULL); }
         }
         g_usleep(100);
     }
