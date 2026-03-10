@@ -18,13 +18,13 @@ void start_global_listen()
     XSelectInput(d, root, KeyPressMask);
     XSync(d, False);
     
-    while(!window1IsActive)
+    while(listening)
     {
         XNextEvent(d, &ev);
         if (ev.type == KeyPress)
         {
             hotkeyIsActive = !hotkeyIsActive;
-            g_thread_new("autoclicker_global", (GThreadFunc)start_auto_clicker, GINT_TO_POINTER(cpsVal));
+            if(hotkeyIsActive) { g_thread_new("autoclicker_global", (GThreadFunc)start_auto_clicker, GINT_TO_POINTER(cpsVal)); }
         }
         g_usleep(100);
     }
