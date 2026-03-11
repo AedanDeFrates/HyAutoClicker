@@ -9,7 +9,10 @@
 #include <fcntl.h>
 #include <linux/uinput.h>
 #include <sys/ioctl.h>
+#include <glib.h>
 
+//Mutex for thread-safe access to shared variables
+extern GMutex shared_mutex;
 
 //Globally used boolean variables for different program states
 extern volatile bool hotkeyIsActive;

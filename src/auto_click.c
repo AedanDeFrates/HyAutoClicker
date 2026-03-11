@@ -78,11 +78,7 @@ void start_auto_clicker()
             g_print("Right Click Sent\n");
         }
     }
-    
-    if(hotkeyIsActive && !listening)
-    {
-        hotkeyIsActive = !hotkeyIsActive;
-    }
+    g_print("Hotkey Deactivated, Ending Auto Clicker Thread\n");
     
     ioctl(fd, UI_DEV_DESTROY);
     close(fd);
