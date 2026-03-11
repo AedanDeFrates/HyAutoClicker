@@ -53,6 +53,8 @@ volatile bool hotkeyIsActive = false;
 volatile gboolean listening = FALSE;
 volatile gboolean hotkeyChangeMode = FALSE;
 
+GMutex shared_mutex;
+
 //==========================================
 // New Global Variables for Click Interval
 //==========================================
@@ -74,7 +76,8 @@ volatile struct input_event clickType = {
 
 int main(int argc, char *argv[])
 {  
-    XInitThreads();   
+    XInitThreads();
+    g_mutex_init(&shared_mutex);
      
     //Initializes GTK
     gtk_init(&argc, &argv);
@@ -163,16 +166,24 @@ void on_toggleListen_toggled(GtkToggleButton *b)
 {  
     g_print("=======Listening toggled=======\n");
     listening = gtk_toggle_button_get_active(b);
-
     g_print("Listening: %d\n", listening);
-    if(listening && !hotkeyIsActive)
+
+    if(!listening)
     {
+        hotkeyIsActive = FALSE;
+    }
+    if(listening)
+    {
+        g_print("==========Program is Listening===========\n");
         gtk_button_set_label(GTK_BUTTON(b), "Listening...");
         g_thread_new("globalListen", (GThreadFunc)start_global_listen, NULL);
     }
-    else gtk_button_set_label(GTK_BUTTON(b), "Start");
+    else
+    {
+        gtk_button_set_label(GTK_BUTTON(b), "Start");
+        g_print("==========Program is NOT Listening===========\n");
+    }
 }
-
 //==============================================================
 // New Signal Handler Functions for Interval Spin Buttons
 //==============================================================

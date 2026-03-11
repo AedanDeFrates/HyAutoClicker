@@ -3,8 +3,7 @@
 
 void start_global_listen()
 {
-    g_print("Global Listen Thread Started\n");
-    if(!listening) { return; }
+    g_print("============Global Listen Thread Started=============\n");
     
     Display *d = XOpenDisplay(NULL); if(!d){g_print("Failed to open display"); return;}
     Window root = DefaultRootWindow(d);
@@ -20,14 +19,19 @@ void start_global_listen()
     
     while(listening)
     {
+        g_print("============Waiting for Hotkey Press=============\n");
         XNextEvent(d, &ev);
         if (ev.type == KeyPress)
         {
-            g_print("Hotkey Pressed\n");
+            g_print("============Hotkey Pressed=============\n");
             
             hotkeyIsActive = !hotkeyIsActive;
             if(hotkeyIsActive) { g_thread_new("autoclicker_global", (GThreadFunc)start_auto_clicker, NULL); }
         }
         g_usleep(100);
     }
+
+    XUngrabKey(d, keycode, modifiers, root);
+    XSync(d, False);
+    XCloseDisplay(d);
 }
