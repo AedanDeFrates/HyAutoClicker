@@ -1,32 +1,37 @@
-#include "shared.h"
-#include <X11/Xlib.h>
-#include <X11/keysym.h>
+#include "shared_vars.h"
+#include "auto_click.h"
 
 void start_global_listen()
 {
-    //If the start button is not activated then the program simply cannot be run with a hotkey
-    //And since the program cannot listen unless the window is active, and the if the window is active
-    //Then the standard gtk signal works fine
-    //Thus this prog terminates
-    if(!listening)
+    g_print("============Global Listen Thread Started=============\n");
+    
+    Display *d = XOpenDisplay(NULL); if(!d){g_print("Failed to open display"); return;}
+    Window root = DefaultRootWindow(d);
+    XEvent ev;
+    
+    int keycode = XKeysymToKeycode(d, XK_F8);
+    unsigned int modifiers = AnyModifier; //Can add settings or functionality for modifiers later
+    
+    XGrabKey(d, keycode, modifiers, root, True, GrabModeAsync, GrabModeAsync);
+    
+    XSelectInput(d, root, KeyPressMask);
+    XSync(d, False);
+    
+    while(listening)
     {
-        return;
+        g_print("============Waiting for Hotkey Press=============\n");
+        XNextEvent(d, &ev);
+        if (ev.type == KeyPress)
+        {
+            g_print("============Hotkey Pressed=============\n");
+            
+            hotkeyIsActive = !hotkeyIsActive;
+            if(hotkeyIsActive) { g_thread_new("autoclicker_global", (GThreadFunc)start_auto_clicker, NULL); }
+        }
+        g_usleep(100);
     }
-    
-    Display *display = XOpenDisplay(NULL);
-    if(!display){g_print("Failed to open display"); return;}
-    
-    Window root = DefaultRootWindow(display);
-    unsigned int modifiers = ControlMask | Mod1Mask;
-    int keycode = XKeysymToKeycode(display, XK_A);
-    
-    while(!window1IsActive)
-    {
-        
-        g_usleep(10000);
-        
-    }
-}
 
-//VERY IMPORTANT
-//g_idle_add((GSourceFunc)on_hotkey_press, NULL);
+    XUngrabKey(d, keycode, modifiers, root);
+    XSync(d, False);
+    XCloseDisplay(d);
+}

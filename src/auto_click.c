@@ -1,17 +1,14 @@
-#include <fcntl.h>
-#include <linux/uinput.h>
-#include <sys/ioctl.h>
+#include "shared_vars.h"
 
-#include "shared.h"
-
-gpointer start_auto_clicker(gpointer arg)
+void start_auto_clicker()
 {
-    int cps = GPOINTER_TO_INT(arg); 
+    g_print("Auto Clicker Thread Started\n");
+
     int fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
     if (fd < 0)
     {
         perror("File Open Error");
-        return NULL;
+        return;
     }
     
     ioctl(fd, UI_SET_EVBIT, EV_KEY);
@@ -41,27 +38,25 @@ gpointer start_auto_clicker(gpointer arg)
     struct input_event ev;    
     memset(&ev, 0, sizeof(ev));
     
-    g_usleep(1);
-    
     while(hotkeyIsActive && listening)
     {
         gettimeofday(&ev.time, NULL);
         ev.type = EV_KEY;
-        ev.code = BTN_LEFT;
+        ev.code = clickType.code; //BTN_LEFT or BTN_RIGHT
         ev.value = 1;
         write(fd, &ev, sizeof(ev));
 
         gettimeofday(&ev.time, NULL);
         ev.type = EV_SYN;
-        ev.code = SYN_REPORT;
+        ev.code = SYN_REPORT; //Indicates the end of an event sequence
         ev.value = 0;
         write(fd, &ev, sizeof(ev));        
 
-        g_usleep(10000);
+        g_usleep(100);
 
         gettimeofday(&ev.time, NULL);
         ev.type = EV_KEY;
-        ev.code = BTN_LEFT;
+        ev.code = clickType.code; //BTN_LEFT or BTN_RIGHT
         ev.value = 0;
         write(fd, &ev, sizeof(ev));
         
@@ -70,12 +65,22 @@ gpointer start_auto_clicker(gpointer arg)
         ev.code = SYN_REPORT;
         ev.value = 0;
         write(fd, &ev, sizeof(ev));
-
-        g_print("click\n");
         
-        g_usleep(1000000 / cps);
+        //should change in the set function for clickIntervalTotal
+        g_usleep(clickIntervalTotal * 1000); //Convert milliseconds to microseconds for g_usleep
+
+        if(clickType.code == BTN_LEFT)
+        {
+            g_print("Left Click Sent\n");
+        }
+        else if(clickType.code == BTN_RIGHT)
+        {
+            g_print("Right Click Sent\n");
+        }
     }
+    g_print("Hotkey Deactivated, Ending Auto Clicker Thread\n");
+    
     ioctl(fd, UI_DEV_DESTROY);
     close(fd);
-    return NULL;
+    return;
 }
