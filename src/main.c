@@ -27,8 +27,9 @@ GtkWidget   *secondSpin;
 GtkWidget   *minuteSpin;
 GtkWidget   *hourSpin;
 
-//==============================================
-//==============================================
+//=============================================================
+//  Global pointer declarations for the tabs and their contents
+//=============================================================
 
 GtkWidget   *fixed1;
 GtkWidget   *fixed2;
@@ -42,6 +43,8 @@ GtkWidget   *toggleListen;
 GtkWidget   *changeHotkeyToggle;
 GtkWidget   *rightClickRadio;
 GtkWidget   *leftClickRadio;
+
+GtkWidget   *rngSwitch
 
 GtkBuilder  *builder;
 
@@ -124,6 +127,7 @@ int main(int argc, char *argv[])
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(leftClickRadio), TRUE);
 
     changeHotkeyToggle = GTK_WIDGET(gtk_builder_get_object(builder, "changeHotkeyToggle"));
+    rngSwitch = GTK_WIDGET(gtk_builder_get_object(builder, "rngSwitch"));
     
     //Tabs that switch container stack
     settingsTab     = GTK_WIDGET(gtk_builder_get_object(builder, "settingsTab"));
