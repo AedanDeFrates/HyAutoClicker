@@ -27,8 +27,9 @@ GtkWidget   *secondSpin;
 GtkWidget   *minuteSpin;
 GtkWidget   *hourSpin;
 
-//==============================================
-//==============================================
+//=============================================================
+//  Global pointer declarations for the tabs and their contents
+//=============================================================
 
 GtkWidget   *fixed1;
 GtkWidget   *fixed2;
@@ -43,6 +44,8 @@ GtkWidget   *changeHotkeyToggle;
 GtkWidget   *rightClickRadio;
 GtkWidget   *leftClickRadio;
 
+GtkWidget   *rngSwitch;
+
 GtkBuilder  *builder;
 
 //====================================
@@ -52,6 +55,7 @@ GtkBuilder  *builder;
 volatile bool hotkeyIsActive = false;
 volatile gboolean listening = FALSE;
 volatile gboolean hotkeyChangeMode = FALSE;
+volatile gboolean rngIsActive = FALSE;
 
 GMutex shared_mutex;
 
@@ -124,6 +128,7 @@ int main(int argc, char *argv[])
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(leftClickRadio), TRUE);
 
     changeHotkeyToggle = GTK_WIDGET(gtk_builder_get_object(builder, "changeHotkeyToggle"));
+    rngSwitch = GTK_WIDGET(gtk_builder_get_object(builder, "rngSwitch"));
     
     //Tabs that switch container stack
     settingsTab     = GTK_WIDGET(gtk_builder_get_object(builder, "settingsTab"));
@@ -171,12 +176,30 @@ void on_toggleListen_toggled(GtkToggleButton *b)
     if(!listening)
     {
         hotkeyIsActive = FALSE;
+
+        gtk_widget_set_sensitive(rngSwitch, TRUE);
+        gtk_widget_set_sensitive(leftClickRadio, TRUE);
+        gtk_widget_set_sensitive(rightClickRadio, TRUE);
+        gtk_widget_set_sensitive(changeHotkeyToggle, TRUE);
+        gtk_widget_set_sensitive(millisecondSpin, TRUE);
+        gtk_widget_set_sensitive(secondSpin, TRUE);
+        gtk_widget_set_sensitive(minuteSpin, TRUE);
+        gtk_widget_set_sensitive(hourSpin, TRUE);
     }
     if(listening)
     {
         g_print("==========Program is Listening===========\n");
         gtk_button_set_label(GTK_BUTTON(b), "Listening...");
         g_thread_new("globalListen", (GThreadFunc)start_global_listen, NULL);
+
+        gtk_widget_set_sensitive(rngSwitch, FALSE);
+        gtk_widget_set_sensitive(leftClickRadio, FALSE);
+        gtk_widget_set_sensitive(rightClickRadio, FALSE);
+        gtk_widget_set_sensitive(changeHotkeyToggle, FALSE);
+        gtk_widget_set_sensitive(millisecondSpin, FALSE);
+        gtk_widget_set_sensitive(secondSpin, FALSE);
+        gtk_widget_set_sensitive(minuteSpin, FALSE);
+        gtk_widget_set_sensitive(hourSpin, FALSE);
     }
     else
     {
@@ -271,13 +294,34 @@ void on_changeHotkeyToggle_toggled()
     hotkeyChangeMode = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(changeHotkeyToggle));
     if(curr != fixed2)
     {
-        g_print("Hotkey Change Toggled, but not in settings tab\n"); return;
+        //g_print("Hotkey Change Toggled, but not in settings tab\n"); return;
     }
     if(!hotkeyChangeMode)
     {
-        g_print("Hotkey Change Toggled OFF\n"); return;
-    }
+        g_print("Hotkey Change Toggled OFF\n"); 
+        
+        gtk_widget_set_sensitive(rngSwitch, TRUE);
+        gtk_widget_set_sensitive(leftClickRadio, TRUE);
+        gtk_widget_set_sensitive(rightClickRadio, TRUE);
+        gtk_widget_set_sensitive(toggleListen, TRUE);
+        gtk_widget_set_sensitive(millisecondSpin, TRUE);
+        gtk_widget_set_sensitive(secondSpin, TRUE);
+        gtk_widget_set_sensitive(minuteSpin, TRUE);
+        gtk_widget_set_sensitive(hourSpin, TRUE);
 
+        return;
+    }
+    else
+    {
+        gtk_widget_set_sensitive(rngSwitch, FALSE);
+        gtk_widget_set_sensitive(leftClickRadio, FALSE);
+        gtk_widget_set_sensitive(rightClickRadio, FALSE);
+        gtk_widget_set_sensitive(toggleListen, FALSE);
+        gtk_widget_set_sensitive(millisecondSpin, FALSE);
+        gtk_widget_set_sensitive(secondSpin, FALSE);
+        gtk_widget_set_sensitive(minuteSpin, FALSE);
+        gtk_widget_set_sensitive(hourSpin, FALSE);
+    }
     g_thread_new("hotkeyChangeListen", (GThreadFunc)start_hotkey_change_listen, NULL);
     g_print("listening for hotkey change\n");
 }
@@ -300,4 +344,17 @@ void on_leftClickRadio_toggled()
 
     clickType.code = BTN_LEFT;
     g_print("clickType.code set to: %d\n", clickType.code); 
+}
+
+/*
+ *  Signal Function that handles Random Interval of clicks
+*/
+void on_rngSwitch_notify(GtkSwitch *b)
+{
+    if(rngIsActive == gtk_switch_get_active(b))
+    {return;}
+
+    rngIsActive = gtk_switch_get_active(b);
+    g_print("========rngSwitch Activated========\nSwitch Status: %d\n", rngIsActive);
+    
 }

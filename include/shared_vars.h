@@ -18,6 +18,7 @@ extern GMutex shared_mutex;
 extern volatile bool hotkeyIsActive;
 extern volatile gboolean listening;
 extern volatile gboolean hotkeyChangeMode;
+extern volatile gboolean rngIsActive;
 
 //Global variable for the click interval. To be assigned in main, and used in the auto click
 extern volatile gint clickIntervalMilliseconds;
