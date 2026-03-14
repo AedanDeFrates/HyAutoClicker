@@ -55,6 +55,7 @@ GtkBuilder  *builder;
 volatile bool hotkeyIsActive = false;
 volatile gboolean listening = FALSE;
 volatile gboolean hotkeyChangeMode = FALSE;
+volatile gboolean rngIsActive = FALSE;
 
 GMutex shared_mutex;
 
@@ -309,8 +310,12 @@ void on_leftClickRadio_toggled()
 /*
  *  Signal Function that handles Random Interval of clicks
 */
-void on_rngSwitch_activate()
+void on_rngSwitch_notify(GtkSwitch *b)
 {
-    g_print("========rngSwitch Activated========\n");
+    if(rngIsActive == gtk_switch_get_active(b))
+    {return;}
 
+    rngIsActive = gtk_switch_get_active(b);
+    g_print("========rngSwitch Activated========\nSwitch Status: %d\n", rngIsActive);
+    
 }

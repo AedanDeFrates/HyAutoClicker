@@ -280,6 +280,7 @@
                       <object class="GtkSwitch" id="rngSwitch">
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
+                        <signal name="notify" handler="on_rngSwitch_notify" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
