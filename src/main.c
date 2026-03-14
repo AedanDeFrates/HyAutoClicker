@@ -176,12 +176,16 @@ void on_toggleListen_toggled(GtkToggleButton *b)
     if(!listening)
     {
         hotkeyIsActive = FALSE;
+
+        gtk_widget_set_sensitive(rngSwitch, TRUE);
     }
     if(listening)
     {
         g_print("==========Program is Listening===========\n");
         gtk_button_set_label(GTK_BUTTON(b), "Listening...");
         g_thread_new("globalListen", (GThreadFunc)start_global_listen, NULL);
+
+        gtk_widget_set_sensitive(rngSwitch, FALSE);
     }
     else
     {
