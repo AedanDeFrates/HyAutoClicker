@@ -294,13 +294,34 @@ void on_changeHotkeyToggle_toggled()
     hotkeyChangeMode = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(changeHotkeyToggle));
     if(curr != fixed2)
     {
-        g_print("Hotkey Change Toggled, but not in settings tab\n"); return;
+        //g_print("Hotkey Change Toggled, but not in settings tab\n"); return;
     }
     if(!hotkeyChangeMode)
     {
-        g_print("Hotkey Change Toggled OFF\n"); return;
-    }
+        g_print("Hotkey Change Toggled OFF\n"); 
+        
+        gtk_widget_set_sensitive(rngSwitch, TRUE);
+        gtk_widget_set_sensitive(leftClickRadio, TRUE);
+        gtk_widget_set_sensitive(rightClickRadio, TRUE);
+        gtk_widget_set_sensitive(toggleListen, TRUE);
+        gtk_widget_set_sensitive(millisecondSpin, TRUE);
+        gtk_widget_set_sensitive(secondSpin, TRUE);
+        gtk_widget_set_sensitive(minuteSpin, TRUE);
+        gtk_widget_set_sensitive(hourSpin, TRUE);
 
+        return;
+    }
+    else
+    {
+        gtk_widget_set_sensitive(rngSwitch, FALSE);
+        gtk_widget_set_sensitive(leftClickRadio, FALSE);
+        gtk_widget_set_sensitive(rightClickRadio, FALSE);
+        gtk_widget_set_sensitive(toggleListen, FALSE);
+        gtk_widget_set_sensitive(millisecondSpin, FALSE);
+        gtk_widget_set_sensitive(secondSpin, FALSE);
+        gtk_widget_set_sensitive(minuteSpin, FALSE);
+        gtk_widget_set_sensitive(hourSpin, FALSE);
+    }
     g_thread_new("hotkeyChangeListen", (GThreadFunc)start_hotkey_change_listen, NULL);
     g_print("listening for hotkey change\n");
 }
