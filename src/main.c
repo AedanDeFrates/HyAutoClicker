@@ -44,7 +44,7 @@ GtkWidget   *changeHotkeyToggle;
 GtkWidget   *rightClickRadio;
 GtkWidget   *leftClickRadio;
 
-GtkWidget   *rngSwitch
+GtkWidget   *rngSwitch;
 
 GtkBuilder  *builder;
 
@@ -304,4 +304,13 @@ void on_leftClickRadio_toggled()
 
     clickType.code = BTN_LEFT;
     g_print("clickType.code set to: %d\n", clickType.code); 
+}
+
+/*
+ *  Signal Function that handles Random Interval of clicks
+*/
+void on_rngSwitch_activate()
+{
+    g_print("========rngSwitch Activated========\n");
+
 }
