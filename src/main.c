@@ -178,6 +178,13 @@ void on_toggleListen_toggled(GtkToggleButton *b)
         hotkeyIsActive = FALSE;
 
         gtk_widget_set_sensitive(rngSwitch, TRUE);
+        gtk_widget_set_sensitive(leftClickRadio, TRUE);
+        gtk_widget_set_sensitive(rightClickRadio, TRUE);
+        gtk_widget_set_sensitive(changeHotkeyToggle, TRUE);
+        gtk_widget_set_sensitive(millisecondSpin, TRUE);
+        gtk_widget_set_sensitive(secondSpin, TRUE);
+        gtk_widget_set_sensitive(minuteSpin, TRUE);
+        gtk_widget_set_sensitive(hourSpin, TRUE);
     }
     if(listening)
     {
@@ -186,6 +193,13 @@ void on_toggleListen_toggled(GtkToggleButton *b)
         g_thread_new("globalListen", (GThreadFunc)start_global_listen, NULL);
 
         gtk_widget_set_sensitive(rngSwitch, FALSE);
+        gtk_widget_set_sensitive(leftClickRadio, FALSE);
+        gtk_widget_set_sensitive(rightClickRadio, FALSE);
+        gtk_widget_set_sensitive(changeHotkeyToggle, FALSE);
+        gtk_widget_set_sensitive(millisecondSpin, FALSE);
+        gtk_widget_set_sensitive(secondSpin, FALSE);
+        gtk_widget_set_sensitive(minuteSpin, FALSE);
+        gtk_widget_set_sensitive(hourSpin, FALSE);
     }
     else
     {
