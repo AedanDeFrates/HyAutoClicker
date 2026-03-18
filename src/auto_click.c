@@ -51,8 +51,9 @@ void start_auto_clicker()
         ev.code = SYN_REPORT; //Indicates the end of an event sequence
         ev.value = 0;
         write(fd, &ev, sizeof(ev));        
-
-        g_usleep(100);
+        
+        if(!rngIsActive){g_usleep(1000);}
+        else {g_usleep(rand() % 1000 + 1);}
 
         gettimeofday(&ev.time, NULL);
         ev.type = EV_KEY;
@@ -67,7 +68,8 @@ void start_auto_clicker()
         write(fd, &ev, sizeof(ev));
         
         //should change in the set function for clickIntervalTotal
-        g_usleep(clickIntervalTotal * 1000); //Convert milliseconds to microseconds for g_usleep
+        if(!rngIsActive){g_usleep(clickIntervalTotal * 1000);} //Convert milliseconds to microseconds for g_usleep
+        else {g_usleep(clickIntervalTotal * 1000 + rand() % 1000 + 1);}
 
         if(clickType.code == BTN_LEFT)
         {
